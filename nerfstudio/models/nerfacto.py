@@ -240,7 +240,8 @@ class NerfactoModel(Model):
         self.normals_shader = NormalsShader()
 
         # losses
-        self.rgb_loss = MSELoss()
+        #self.rgb_loss = MSELoss()
+        self.rgb_loss = lambda gt, pred: torch.tensor(0.0, device=gt.device, dtype=gt.dtype)
         self.step = 0
         # metrics
         from torchmetrics.functional import structural_similarity_index_measure
