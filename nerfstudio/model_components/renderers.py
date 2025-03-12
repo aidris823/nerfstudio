@@ -360,7 +360,7 @@ class DepthRenderer(nn.Module):
             median_index = torch.searchsorted(cumulative_weights, split, side="left")  # [..., 1]
             median_index = torch.clamp(median_index, 0, steps.shape[-2] - 1)  # [..., 1]
             median_depth = torch.gather(steps[..., 0], dim=-1, index=median_index)  # [..., 1]
-            return median_depth
+            return torch.remainder(median_depth,35000)
         if self.method == "expected":
             eps = 1e-10
             steps = (ray_samples.frustums.starts + ray_samples.frustums.ends) / 2
@@ -379,7 +379,7 @@ class DepthRenderer(nn.Module):
 
             depth = torch.clip(depth, steps.min(), steps.max())
 
-            return depth
+            return torch.remainder(depth,35000)
 
         raise NotImplementedError(f"Method {self.method} not implemented")
 
